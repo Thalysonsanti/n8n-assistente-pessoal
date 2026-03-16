@@ -1,0 +1,230 @@
+{
+  "name": "Finaças pessoais",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "176238bf-fc5c-4534-a837-1e0a4ebc4d99"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "40938f63-7759-4400-aa7e-a0bdcbfe5d9c",
+      "name": "MCP Server Trigger",
+      "webhookId": "176238bf-fc5c-4534-a837-1e0a4ebc4d99"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1SNnnwrv4Jnv9lnbgURmj7Iia1-38-RiAraeFca09HYg",
+          "mode": "list",
+          "cachedResultName": "finanças pessoais",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SNnnwrv4Jnv9lnbgURmj7Iia1-38-RiAraeFca09HYg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SNnnwrv4Jnv9lnbgURmj7Iia1-38-RiAraeFca09HYg/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        -144,
+        176
+      ],
+      "id": "970993b8-49e5-4c93-9e70-f1fd0a4e72be",
+      "name": "Consultar dados",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bxnthrp1s7Nkp13k",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1SNnnwrv4Jnv9lnbgURmj7Iia1-38-RiAraeFca09HYg",
+          "mode": "list",
+          "cachedResultName": "finanças pessoais",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SNnnwrv4Jnv9lnbgURmj7Iia1-38-RiAraeFca09HYg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SNnnwrv4Jnv9lnbgURmj7Iia1-38-RiAraeFca09HYg/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Pagamento": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Pagamento', ``, 'string') }}",
+            "Categoria": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Categoria', ``, 'string') }}",
+            "Data": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Data', ``, 'string') }}",
+            "Descrição": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Descri__o', ``, 'string') }}",
+            "Valor": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Valor', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Data",
+              "displayName": "Data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Descrição",
+              "displayName": "Descrição",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Valor",
+              "displayName": "Valor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Categoria",
+              "displayName": "Categoria",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Pagamento",
+              "displayName": "Pagamento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        128,
+        192
+      ],
+      "id": "b2099521-7853-45b6-9ca8-4903fc36df0d",
+      "name": "Registrar dados",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bxnthrp1s7Nkp13k",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "documentId": {
+          "__rl": true,
+          "value": "1SNnnwrv4Jnv9lnbgURmj7Iia1-38-RiAraeFca09HYg",
+          "mode": "list",
+          "cachedResultName": "finanças pessoais",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SNnnwrv4Jnv9lnbgURmj7Iia1-38-RiAraeFca09HYg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SNnnwrv4Jnv9lnbgURmj7Iia1-38-RiAraeFca09HYg/edit#gid=0"
+        },
+        "startIndex": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start_Row_Number', ``, 'number') }}",
+        "numberToDelete": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Number_of_Rows_to_Delete', ``, 'number') }}"
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        368,
+        176
+      ],
+      "id": "896dbc3a-955a-4612-833d-96df18417bdb",
+      "name": "excluir dados",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bxnthrp1s7Nkp13k",
+          "name": "Google Sheets account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Consultar dados": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar dados": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "excluir dados": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "2d8f86fa-bf93-40a9-b6dc-15bbdebfa374",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "97b7bec3366127fa3e67183233b4c7db460bbcba1ac122389d61e69276768785"
+  },
+  "id": "u017vc3WaH02PbUc",
+  "tags": []
+}
