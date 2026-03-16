@@ -1,1 +1,454 @@
-
+{
+  "name": "Agente pessoal copy",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -192,
+        -16
+      ],
+      "id": "a8fac83b-65f1-4e8e-ae22-cf86a8c613d2",
+      "name": "Telegram Trigger",
+      "webhookId": "db1fa384-58b0-4b21-814a-f9483490665c",
+      "credentials": {
+        "telegramApi": {
+          "id": "4XroWWry0CPNrcSv",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.message.voice.file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        464,
+        -128
+      ],
+      "id": "6de66aae-fda4-4e07-8de8-2284d8964591",
+      "name": "Get a file",
+      "webhookId": "60f919cc-177a-4dd3-991a-1bf8e6adecce",
+      "credentials": {
+        "telegramApi": {
+          "id": "4XroWWry0CPNrcSv",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        656,
+        -128
+      ],
+      "id": "302e80a3-3c0b-43fd-b632-49f982cd2087",
+      "name": "Transcribe a recording",
+      "credentials": {
+        "openAiApi": {
+          "id": "Q0H86qtqgGz2Sw4i",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4e3e778e-90d3-4393-bc64-19423c640f97",
+              "name": "message.text",
+              "value": "={{ $json.message.text }}",
+              "type": "string"
+            },
+            {
+              "id": "829f4db3-5b34-4622-a925-dc381f7394ba",
+              "name": "message.voice.file_id",
+              "value": "={{ $json.message.voice.file_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        880,
+        0
+      ],
+      "id": "10b09690-4a88-4c36-af2e-728c8d799e06",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}{{ $json.message.voice.file_id }}",
+        "options": {
+          "systemMessage": "=Você é um **assistente pessoal de produtividade e controle financeiro**.\nSeu trabalho é **gerenciar agenda e registrar movimentações financeiras** utilizando as ferramentas conectadas no n8n.\n\nVocê deve agir de forma **precisa, objetiva e estruturada**, evitando interpretações ambíguas.\n\n---\n\nFUNÇÕES PRINCIPAIS\n\n1. Gestão de Agenda (Calendário)\n\nQuando o usuário mencionar compromissos, você deve:\n\n* Identificar:\n\n  * Título do evento\n  * Data\n  * Horário\n  * Duração (se mencionada)\n  * Observações (se houver)\n\n* Criar ou atualizar eventos no Google Calendar.\n\nExemplos de intenções:\n\n* \"Marcar reunião amanhã às 14h\"\n* \"Lembrete de pagar conta sexta\"\n* \"Consulta médica dia 20 às 9h\"\n\nSe faltar informação essencial (data ou horário), solicite ao usuário.\n\n---\n\n2. Controle Financeiro\n\nQuando o usuário mencionar gastos, pagamentos ou receitas, você deve registrar no Google Sheets.\n\nCampos obrigatórios do registro:\n\n* Data\n* Descrição\n* Categoria\n* Tipo (Gasto ou Receita)\n* Valor\n\nCategorias sugeridas:\n\n* Alimentação\n* Transporte\n* Moradia\n* Lazer\n* Assinaturas\n* Investimentos\n* Outros\n\nExemplos de comandos:\n\n* \"Gastei 45 reais com almoço\"\n* \"Paguei 120 da internet\"\n* \"Recebi 800 de um cliente\"\n\nInterpretação esperada:\n\n\"Gastei 45 no almoço\"\n\nData: hoje\nDescrição: Almoço\nCategoria: Alimentação\nTipo: Gasto\nValor: 45\n\n---\n\n3. Consultas\n\nO usuário também pode pedir consultas como:\n\n* \"Quanto gastei hoje?\"\n* \"Quais compromissos tenho amanhã?\"\n* \"Quanto gastei com alimentação esse mês?\"\n\nNestes casos, consulte as ferramentas conectadas antes de responder.\n\n---\n\nREGRAS IMPORTANTES\n\n* Nunca invente dados.\n* Sempre confirme valores monetários.\n* Use sempre números para valores financeiros.\n* Se houver ambiguidade, pergunte antes de registrar.\n\n---\n\nFORMATO DE RESPOSTA\n\nSe for criar ou registrar algo:\n\nConfirme a ação de forma clara.\n\nExemplo:\n\"Registro feito:\nGasto de R$45,00 em Alimentação (Almoço) no dia 16/03.\"\n\nou\n\n\"Evento criado:\nReunião com cliente — 18/03 às 14:00.\"\n\n---\n\nOBJETIVO\n\nAjudar o usuário a manter **agenda organizada e controle financeiro preciso**, utilizando automações conectadas ao n8n.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        464,
+        240
+      ],
+      "id": "ee8a7337-c71b-4195-af40-100507c47575",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        208,
+        448
+      ],
+      "id": "9f490f37-b9da-4d9a-8633-6e6e5b35f68e",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "Q0H86qtqgGz2Sw4i",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram Trigger').item.json.message.from.id }}",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        400,
+        448
+      ],
+      "id": "da8cc80b-9861-4391-8e93-6b7a2a47a5cc",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.from.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        880,
+        240
+      ],
+      "id": "4f0aa716-6ce8-47a2-b7a9-ee62dc396da3",
+      "name": "Send a text message",
+      "webhookId": "6ee703cb-1051-465b-b472-6df90de00355",
+      "credentials": {
+        "telegramApi": {
+          "id": "4XroWWry0CPNrcSv",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "endpointUrl": "https://agenciadeia-n8n.hz0ktc.easypanel.host/mcp/e381a74b-1d69-48f2-b502-42b4942d895f",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.2,
+      "position": [
+        576,
+        448
+      ],
+      "id": "bf30e4ac-d2c3-4539-8a4d-836dd6ae052a",
+      "name": "Calendario"
+    },
+    {
+      "parameters": {
+        "endpointUrl": "https://agenciadeia-n8n.hz0ktc.easypanel.host/mcp/176238bf-fc5c-4534-a837-1e0a4ebc4d99",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.2,
+      "position": [
+        752,
+        448
+      ],
+      "id": "8cab7e97-93f2-45d9-ab80-8f792a575ac5",
+      "name": "Fincaneiro"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "089095c1-ed8c-4b04-b1b6-4c1791f51051",
+              "name": "message.text",
+              "value": "={{ $json.message.text }}",
+              "type": "string"
+            },
+            {
+              "id": "10b94ab0-a5ef-4e7b-8b86-fc7021946cba",
+              "name": "message.voice.file_id",
+              "value": "={{ $json.message.voice.file_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        16,
+        -16
+      ],
+      "id": "1957e2c6-c2e1-4a99-89be-e277b855fbcf",
+      "name": "Dados"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "7a851c5f-e66c-407a-85db-60f29fc78e35",
+                    "leftValue": "={{ $json.message.voice.file_id }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "audio"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "id": "cd463a66-2da0-4889-8c95-f3e33f7e3e41"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        224,
+        -16
+      ],
+      "id": "7e46f273-ad1a-46fe-ab71-4ecd37ed55a3",
+      "name": "texto ou audio"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a file": {
+      "main": [
+        [
+          {
+            "node": "Transcribe a recording",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribe a recording": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calendario": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fincaneiro": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dados": {
+      "main": [
+        [
+          {
+            "node": "texto ou audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "texto ou audio": {
+      "main": [
+        [
+          {
+            "node": "Get a file",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "98018125-e683-4132-b6bd-9fbbd9448ad0",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "97b7bec3366127fa3e67183233b4c7db460bbcba1ac122389d61e69276768785"
+  },
+  "id": "vXqe2nzrLvQ0GUN4",
+  "tags": [
+    {
+      "updatedAt": "2026-03-16T13:44:09.441Z",
+      "createdAt": "2026-03-16T13:44:09.441Z",
+      "id": "fIfH9gAoHi6M49oN",
+      "name": "test GitHub"
+    }
+  ]
+}
